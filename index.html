@@ -1,0 +1,1637 @@
+
+
+---------- Forwarded message ---------
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MyelomaDx — Diagnostic & Treatment Assistant</title>
+<style>
+*{box-sizing:border-box}
+:root{
+--bg:#eef2f6; --panel:#fff; --ink:#12222e; --muted:#5a6b7a; --line:#dde5ec;
+--accent:#0b6b6b; --accent-d:#074f4f; --teal:#0e7490;
+--red:#b91c1c; --amber:#b45309; --green:#15803d; --blue:#1e40af;
+--r:12px; --sh:0 1px 2px rgba(16,32,48,.06),0 4px 14px rgba(16,32,48,.05);
+}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;font-size:15px}
+h1,h2,h3,h4{margin:0 0 .4em;line-height:1.25;font-weight:650}
+h1{font-size:1.35rem}h2{font-size:1.15rem}h3{font-size:1rem}h4{font-size:.9rem}
+p{margin:0 0 .8em}
+a{color:var(--accent)}
+
+/* ---------- Header ---------- */
+header{background:linear-gradient(135deg,#0b3d3d,#0b6b6b 55%,#0e7490);color:#fff;
+padding:18px 20px 0;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.hwrap{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.15);
+display:grid;place-items:center;font-size:20px;border:1px solid rgba(255,255,255,.25)}
+.brand h1{font-size:1.15rem;margin:0;letter-spacing:.2px}
+.brand span{font-size:.72rem;opacity:.8;letter-spacing:.6px;text-transform:uppercase}
+nav{max-width:1180px;margin:14px auto 0;display:flex;gap:4px;overflow-x:auto;padding-bottom:0;
+scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.nav-btn{background:transparent;border:0;color:rgba(255,255,255,.78);padding:10px 15px;
+font:inherit;font-size:.86rem;font-weight:550;cursor:pointer;border-radius:9px 9px 0 0;
+white-space:nowrap;transition:.15s}
+.nav-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-btn.active{background:var(--bg);color:var(--accent-d)}
+
+/* ---------- Unit toggle ---------- */
+.unit-toggle{margin-left:auto;display:flex;background:rgba(255,255,255,.12);border-radius:9px;
+padding:3px;border:1px solid rgba(255,255,255,.22);gap:2px;position:relative}
+.ut-btn{background:transparent;border:0;color:rgba(255,255,255,.72);padding:7px 14px;border-radius:7px;
+font:inherit;font-size:.76rem;font-weight:700;letter-spacing:.6px;cursor:pointer;transition:.15s;
+display:flex;flex-direction:column;align-items:center;line-height:1.15}
+.ut-btn small{font-size:.6rem;font-weight:500;opacity:.65;letter-spacing:0}
+.ut-btn:hover{color:#fff}
+.ut-btn.active{background:#fff;color:var(--accent-d);box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.ut-btn.active small{opacity:.8}
+@media(max-width:520px){.unit-toggle{margin-left:0;width:100%;justify-content:center}}
+
+/* ---------- Layout ---------- */
+main{max-width:1180px;margin:0 auto;padding:22px 20px 80px}
+.panel{display:none;animation:fade .25s ease}
+.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+padding:20px;margin-bottom:18px;box-shadow:var(--sh)}
+.card>h2{display:flex;align-items:center;gap:9px;padding-bottom:10px;
+border-bottom:1px solid var(--line);margin-bottom:14px}
+.card>h2 .ico{font-size:1.05rem}
+.sub{color:var(--muted);font-size:.88rem}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* ---------- Form controls ---------- */
+label.fld{display:block;margin-bottom:12px}
+label.fld>span{display:block;font-size:.78rem;font-weight:600;color:var(--muted);
+text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+input[type=number],input[type=text],select{width:100%;padding:9px 11px;border:1px solid var(--line);
+border-radius:9px;font:inherit;background:#fbfcfd;color:var(--ink);transition:.15s}
+input:focus,select:focus{outline:none;border-color:var(--teal);background:#fff;
+box-shadow:0 0 0 3px rgba(14,116,144,.12)}
+
+.chk{display:flex;gap:10px;align-items:flex-start;padding:9px 11px;border:1px solid var(--line);
+border-radius:9px;margin-bottom:7px;cursor:pointer;background:#fbfcfd;transition:.15s;font-size:.9rem}
+.chk:hover{border-color:#c3d2dc;background:#fff}
+.chk input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex-shrink:0;cursor:pointer}
+.chk.checked{border-color:var(--teal);background:#f0fbfb}
+.chk small{display:block;color:var(--muted);font-size:.79rem;line-height:1.4}
+.chk b{font-weight:600}
+
+.btn{background:var(--accent);color:#fff;border:0;padding:11px 20px;border-radius:9px;
+font:inherit;font-weight:600;font-size:.9rem;cursor:pointer;transition:.15s;
+box-shadow:0 2px 6px rgba(11,107,107,.25)}
+.btn:hover{background:var(--accent-d);transform:translateY(-1px)}
+.btn.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent);box-shadow:none}
+.btn.ghost:hover{background:#f0fbfb}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+
+.numhint{display:block;font-size:.72rem;margin-top:4px;color:var(--muted);
+font-weight:600;letter-spacing:.2px;min-height:1em}
+
+/* ---------- Verdict ---------- */
+.verdict{border-radius:var(--r);padding:16px 18px;margin-top:4px;border-left:5px solid;
+display:flex;gap:14px;align-items:flex-start}
+.verdict .em{font-size:1.6rem;line-height:1}
+.verdict h3{margin:0 0 4px;font-size:1.05rem}
+.verdict p{margin:0;font-size:.88rem}
+.v-red{background:#fef2f2;border-color:var(--red);color:#7f1d1d}
+.v-amber{background:#fffbeb;border-color:var(--amber);color:#78350f}
+.v-green{background:#f0fdf4;border-color:var(--green);color:#14532d}
+.v-blue{background:#eff6ff;border-color:var(--blue);color:#1e3a8a}
+
+/* ---------- Tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}
+th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;
+color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--line);font-weight:700}
+td{padding:9px 10px;border-bottom:1px solid #eef3f7;vertical-align:top}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#f8fbfc}
+td.drug{font-weight:650;white-space:nowrap;color:var(--accent-d)}
+.dose{font-variant-numeric:tabular-nums}
+
+/* ---------- Badges ---------- */
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:.7rem;
+font-weight:700;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap}
+.b-pre{background:#dcfce7;color:#14532d}
+.b-alt{background:#e0f2fe;color:#0c4a6e}
+.b-cir{background:#fef3c7;color:#78350f}
+.b-hr{background:#fee2e2;color:#7f1d1d}
+.b-cat1{background:#ede9fe;color:#4c1d95}
+
+/* ---------- Regimen cards ---------- */
+.reg{background:#fff;border:1px solid var(--line);border-radius:var(--r);margin-bottom:14px;
+overflow:hidden;box-shadow:var(--sh);transition:.2s}
+.reg.flash{box-shadow:0 0 0 3px rgba(14,116,144,.35)}
+.reg-h{padding:14px 18px;display:flex;justify-content:space-between;gap:12px;align-items:center;
+cursor:pointer;background:#fafcfd;flex-wrap:wrap}
+.reg-h:hover{background:#f4f9fb}
+.reg-h .ttl{font-weight:700;font-size:1rem;color:var(--accent-d)}
+.reg-h .full{font-size:.78rem;color:var(--muted);font-weight:400;display:block}
+.reg-b{padding:0 18px 18px;display:none}
+.reg.open .reg-b{display:block}
+.reg.open .reg-h{border-bottom:1px solid var(--line)}
+.chev{transition:.25s;color:var(--muted);font-size:.85rem}
+.reg.open .chev{transform:rotate(90deg)}
+.meta{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin:12px 0}
+.meta b{color:var(--ink);font-weight:650}
+
+.note{background:#f8fafc;border-left:3px solid var(--teal);padding:10px 13px;border-radius:0 8px 8px 0;
+font-size:.83rem;margin:10px 0;color:#334155}
+.note.warn{background:#fffbeb;border-color:var(--amber);color:#78350f}
+.note.dang{background:#fef2f2;border-color:var(--red);color:#7f1d1d}
+
+/* ---------- Toxicity accordion ---------- */
+.tox{border:1px solid var(--line);border-radius:10px;margin-bottom:9px;overflow:hidden;background:#fff}
+.tox-h{padding:12px 16px;cursor:pointer;display:flex;justify-content:space-between;
+align-items:center;font-weight:620;font-size:.92rem;gap:10px}
+.tox-h:hover{background:#f6fafb}
+.tox-b{padding:0 16px 14px;display:none;font-size:.86rem}
+.tox.open .tox-b{display:block}
+.tox.open .tox-h{background:#f0fbfb;color:var(--accent-d)}
+.tox ul{margin:6px 0 10px;padding-left:18px}
+.tox li{margin-bottom:5px}
+.tox .lbl{font-weight:650;color:var(--accent-d)}
+
+/* ---------- Misc ---------- */
+.pill{display:inline-block;background:#eef4f7;color:var(--muted);border-radius:6px;
+padding:2px 8px;font-size:.74rem;font-weight:600;margin:0 4px 4px 0}
+.disc{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;padding:12px 16px;
+border-radius:10px;font-size:.82rem;margin-bottom:18px}
+.disc b{font-weight:700}
+.stepper{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.step{flex:1;min-width:150px;background:#fff;border:1px solid var(--line);border-radius:10px;
+padding:10px 12px;font-size:.8rem;position:relative;border-top:3px solid var(--line)}
+.step.on{border-top-color:var(--accent);background:#f0fbfb}
+.step b{display:block;font-size:.73rem;text-transform:uppercase;letter-spacing:.5px;
+color:var(--muted);margin-bottom:2px}
+.hr{height:1px;background:var(--line);margin:16px 0}
+.small{font-size:.8rem;color:var(--muted)}
+ol.refs{font-size:.8rem;color:var(--muted);padding-left:20px}
+ol.refs li{margin-bottom:6px}
+.unit-note{font-size:.72rem;color:var(--muted);margin-top:-6px;margin-bottom:10px;font-style:italic}
+@media print{header,nav,.btn,.btnrow,.unit-toggle{display:none!important}.panel{display:block!important}
+.reg-b,.tox-b{display:block!important}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<header>
+<div class="hwrap">
+<div class="logo">🩸</div>
+<div class="brand">
+<h1>MyelomaDx</h1>
+<span>Diagnostic &amp; Treatment Assistant · NCCN / IMWG 2026</span>
+</div>
+<div class="unit-toggle" id="unitToggle" role="group" aria-label="Unit system">
+<button class="ut-btn active" data-unit="US" onclick="setUnits('US')">US<small>mg/dL</small></button>
+<button class="ut-btn" data-unit="SI" onclick="setUnits('SI')">SI<small>mmol/L</small></button>
+</div>
+</div>
+<nav>
+<button class="nav-btn active" data-tab="dx">① Diagnosis</button>
+<button class="nav-btn" data-tab="risk">② Staging &amp; Risk</button>
+<button class="nav-btn" data-tab="rx">③ Treatment Plan</button>
+<button class="nav-btn" data-tab="reg">④ Regimen Dosing</button>
+<button class="nav-btn" data-tab="tox">⑤ Toxicity Management</button>
+<button class="nav-btn" data-tab="sup">⑥ Supportive Care</button>
+<button class="nav-btn" data-tab="ref">⑦ References</button>
+</nav>
+</header>
+
+<main>
+
+<div class="disc">
+<b>⚠ Clinical decision support only.</b> This tool encodes published NCCN, IMWG and ASCO guidance and is intended
+for use by qualified clinicians. Doses reflect commonly used protocols and <b>must be verified against the primary
+publication and your institutional protocol</b> before prescribing. It does not replace clinical judgement,
+multidisciplinary review, or the full guideline text.
+</div>
+
+<!-- ============================================================ 1. DIAGNOSIS -->
+<section class="panel active" id="panel-dx">
+
+<div class="card">
+<h2><span class="ico">🔬</span>IMWG Diagnostic Criteria — Interactive Checker</h2>
+<p class="sub">Active (symptomatic) myeloma requires <b>both</b> a clonal plasma-cell criterion <b>and</b> ≥1 myeloma-defining event (CRAB or SLiM).</p>
+
+<div class="grid2">
+<div>
+<h3 style="margin-top:14px">A · Clonal plasma-cell criterion</h3>
+<label class="fld"><span>Bone marrow clonal plasma cells (%)</span>
+<input type="number" id="bmpc" min="0" max="100" step="1" placeholder="e.g. 35">
+</label>
+<label class="chk" id="plasChk"><input type="checkbox" id="plasmacytoma">
+<div><b>Biopsy-proven bony or extramedullary plasmacytoma</b>
+<small>Counts as the clonal criterion even if marrow is &lt;10%</small></div>
+</label>
+<div class="note">Either <b>clonal BMPC ≥10%</b> <i>or</i> a biopsy-proven plasmacytoma satisfies this criterion.</div>
+</div>
+
+<div>
+<h3 style="margin-top:14px">B · Myeloma-defining events</h3>
+<p class="small" style="margin-bottom:6px"><b>CRAB</b> — end-organ damage</p>
+<label class="chk crab" data-label="Hypercalcemia"><input type="checkbox" id="crabCa">
+<div><b>C — Hypercalcemia</b>
+<small data-us="Serum Ca >11 mg/dL or >1 mg/dL above ULN"
+data-si="Serum Ca >2.75 mmol/L or >0.25 mmol/L above ULN">Serum Ca &gt;11 mg/dL or &gt;1 mg/dL above ULN</small></div></label>
+<label class="chk crab" data-label="Renal insufficiency"><input type="checkbox" id="crabCr">
+<div><b>R — Renal insufficiency</b>
+<small data-us="CrCl <40 mL/min or creatinine >2 mg/dL"
+data-si="CrCl <40 mL/min or creatinine >177 µmol/L">CrCl &lt;40 mL/min or creatinine &gt;2 mg/dL</small></div></label>
+<label class="chk crab" data-label="Anemia"><input type="checkbox" id="crabHgb">
+<div><b>A — Anemia</b>
+<small data-us="Hgb <10 g/dL or >2 g/dL below LLN"
+data-si="Hgb <100 g/L or >20 g/L below LLN">Hgb &lt;10 g/dL or &gt;2 g/dL below LLN</small></div></label>
+<label class="chk crab" data-label="Bone lesions"><input type="checkbox">
+<div><b>B — Bone disease</b><small>≥1 osteolytic lesion on radiography, CT or PET-CT</small></div></label>
+
+<p class="small" style="margin:14px 0 6px"><b>SLiM</b> — biomarkers of malignancy</p>
+<label class="chk slim" data-label="BMPC ≥60%"><input type="checkbox" id="slimBmpc">
+<div><b>S — Clonal BMPC ≥60%</b><small>Auto-checked from marrow input</small></div></label>
+<label class="chk slim" data-label="sFLC ratio ≥100"><input type="checkbox">
+<div><b>Li — Involved:uninvolved sFLC ratio ≥100</b><small>Involved FLC must be ≥100 mg/L (100 µg/mL)</small></div></label>
+<label class="chk slim" data-label=">1 focal lesion on MRI"><input type="checkbox">
+<div><b>M — &gt;1 focal lesion on MRI</b><small>≥5 mm each, in bone marrow</small></div></label>
+</div>
+</div>
+
+<div class="hr"></div>
+<h3>Optional — enter quantitative values to auto-detect CRAB</h3>
+<div class="unit-note">Values and thresholds update automatically with the US / SI toggle.</div>
+<div class="grid3">
+<label class="fld"><span>Serum calcium (<span class="u-ca">mg/dL</span>)</span>
+<input type="number" id="caVal" step="0.1" placeholder="e.g. 11.5">
+<small class="numhint caHint"></small>
+</label>
+<label class="fld"><span>Creatinine (<span class="u-cr">mg/dL</span>)</span>
+<input type="number" id="crVal" step="0.1" placeholder="e.g. 2.5">
+<small class="numhint crHint"></small>
+</label>
+<label class="fld"><span>Hemoglobin (<span class="u-hgb">g/dL</span>)</span>
+<input type="number" id="hgbVal" step="0.1" placeholder="e.g. 9.2">
+<small class="numhint hgbHint"></small>
+</label>
+</div>
+
+<div class="hr"></div>
+<h3>Optional — for smoldering classification</h3>
+<div class="grid3">
+<label class="fld"><span>Serum M-protein (<span class="u-mprot">g/dL</span>)</span>
+<input type="number" id="mprot" step="0.1" min="0" placeholder="e.g. 2.4"></label>
+<label class="fld"><span>Urine Bence-Jones (mg/24 h)</span>
+<input type="number" id="bj" step="10" min="0" placeholder="e.g. 300"></label>
+<div style="display:flex;align-items:flex-end">
+<button class="btn" style="width:100%" onclick="runDx()">Evaluate Criteria</button>
+</div>
+</div>
+
+<div id="dxOut" style="margin-top:16px"></div>
+</div>
+
+<div class="card">
+<h2><span class="ico">🧪</span>Initial Diagnostic Workup (NCCN MYEL-1)</h2>
+<div class="grid3">
+<div>
+<h4>Laboratory</h4>
+<ul class="small" style="padding-left:18px;margin:0">
+<li>CBC with differential</li>
+<li>Peripheral smear / flow for circulating plasma cells</li>
+<li>BUN, creatinine, electrolytes, LFTs, albumin</li>
+<li>Calcium, uric acid, LDH, β2-microglobulin</li>
+<li>Creatinine clearance (24-h or calculated)</li>
+<li>Serum quantitative immunoglobulins, SPEP, SIFE</li>
+<li>24-h urine: total protein, UPEP, UIFE</li>
+<li>Serum free light chain assay (κ/λ, ratio)</li>
+<li>NT-proBNP (amyloid screening)</li>
+</ul>
+</div>
+<div>
+<h4>Imaging</h4>
+<ul class="small" style="padding-left:18px;margin:0">
+<li><b>Whole-body FDG-PET/CT</b> — preferred</li>
+<li>Low-dose whole-body CT — alternative</li>
+<li>Whole-body MRI if PET/CT negative, to distinguish smoldering from active disease</li>
+<li>Dedicated MRI for suspected cord compression</li>
+</ul>
+</div>
+<div>
+<h4>Marrow &amp; genetics</h4>
+<ul class="small" style="padding-left:18px;margin:0">
+<li>Unilateral aspirate + biopsy with IHC and/or flow cytometry</li>
+<li>Plasma-cell FISH: del(13q), <b>del(17p13)</b>, <b>t(4;14)</b>, t(11;14), <b>t(14;16)</b>, <b>t(14;20)</b>, 1q21 gain/amp, 1p deletion</li>
+<li>NGS for <b>TP53</b> mutation</li>
+<li>Consider baseline clonotype for future MRD testing</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================================ 2. RISK -->
+<section class="panel" id="panel-risk">
+<div class="card">
+<h2><span class="ico">📊</span>ISS / R-ISS Staging Calculator</h2>
+<div class="unit-note">Albumin converts automatically between g/dL (US) and g/L (SI). β2-microglobulin is reported as mg/L in both systems.</div>
+<div class="grid3">
+<label class="fld"><span>β2-microglobulin (mg/L)</span>
+<input type="number" id="b2m" step="0.1" placeholder="e.g. 4.2"></label>
+<label class="fld"><span>Albumin (<span class="u-alb">g/dL</span>)</span>
+<input type="number" id="alb" step="0.1" placeholder="e.g. 3.1"></label>
+<label class="fld"><span>LDH</span>
+<select id="ldh">
+<option value="normal">Normal / ≤ ULN</option>
+<option value="high">Elevated &gt; ULN</option>
+</select>
+</label>
+</div>
+
+<h4 style="margin-top:6px">High-risk cytogenetics (FISH / NGS)</h4>
+<p class="small" style="margin-bottom:8px">R-ISS uses del(17p), t(4;14), t(14;16). The extended set also informs mSMART &amp; trial eligibility.</p>
+<div class="grid3">
+<label class="chk hrca" data-label="del(17p)"><input type="checkbox"><div><b>del(17p)</b></div></label>
+<label class="chk hrca" data-label="TP53 mutation"><input type="checkbox"><div><b>TP53 mutation</b></div></label>
+<label class="chk hrca" data-label="t(4;14)"><input type="checkbox"><div><b>t(4;14)</b></div></label>
+<label class="chk hrca" data-label="t(14;16)"><input type="checkbox"><div><b>t(14;16)</b></div></label>
+<label class="chk hrca" data-label="t(14;20)"><input type="checkbox"><div><b>t(14;20)</b> <small>Extended risk</small></div></label>
+<label class="chk hrca" data-label="1q21 gain/amp"><input type="checkbox"><div><b>1q21 gain / amplification</b> <small>Extended risk</small></div></label>
+<label class="chk hrca" data-label="del(1p32)"><input type="checkbox"><div><b>del(1p32)</b> <small>Extended risk</small></div></label>
+</div>
+
+<div class="btnrow"><button class="btn" onclick="runRisk()">Calculate Stage</button></div>
+<div id="riskOut" style="margin-top:16px"></div>
+</div>
+</section>
+
+<!-- ============================================================ 3. TREATMENT -->
+<section class="panel" id="panel-rx">
+<div class="card">
+<h2><span class="ico">🎯</span>Treatment Selection Engine</h2>
+<p class="sub">Answer the clinical variables below to generate a risk- and fitness-adapted induction + maintenance plan.</p>
+
+<div class="grid3">
+<label class="fld"><span>Transplant eligibility</span>
+<select id="txElig">
+<option value="yes">Eligible — proceed to ASCT</option>
+<option value="deferred">Deferred / delayed ASCT</option>
+<option value="no">Not eligible</option>
+</select>
+</label>
+<label class="fld"><span>Frailty (GA-based)</span>
+<select id="frail"><option value="no">Fit / intermediate-fit</option><option value="yes">Frail</option></select>
+</label>
+<label class="fld"><span>Age</span>
+<select id="age"><option value="lt80">&lt;80 years</option><option value="ge80">≥80 years</option></select>
+</label>
+<label class="fld"><span>Renal function</span>
+<select id="renal"><option value="no">CrCl ≥40 mL/min</option><option value="yes">CrCl &lt;40 mL/min or dialysis</option></select>
+</label>
+<label class="fld"><span>Peripheral neuropathy</span>
+<select id="neuro"><option value="no">None / grade 1</option><option value="yes">Grade ≥2 or pre-existing</option></select>
+</label>
+<label class="fld"><span>Cardiac history</span>
+<select id="cardiac"><option value="no">No significant disease</option><option value="yes">HF, uncontrolled HTN, arrhythmia, ischemia</option></select>
+</label>
+</div>
+
+<h4 style="margin-top:4px">Cytogenetic risk</h4>
+<div class="grid2">
+<label class="fld"><span>Number of high-risk abnormalities</span>
+<select id="hrCount">
+<option value="0">0 — standard risk</option>
+<option value="1">1 — high risk</option>
+<option value="2">≥2 — double-hit / ultra high risk</option>
+</select>
+</label>
+<label class="fld"><span>Disease burden</span>
+<select id="burden">
+<option value="std">Standard</option>
+<option value="high">High tumour burden / plasma cell leukemia / extramedullary</option>
+</select>
+</label>
+</div>
+
+<div class="btnrow">
+<button class="btn" onclick="recommend()">Generate Plan</button>
+<button class="btn ghost" onclick="window.print()">Print / Save PDF</button>
+</div>
+<div id="rxOut" style="margin-top:18px"></div>
+</div>
+</section>
+
+<!-- ============================================================ 4. REGIMENS -->
+<section class="panel" id="panel-reg">
+<div class="card">
+<h2><span class="ico">💊</span>Regimen Dosing Library</h2>
+<p class="sub">Click any regimen to expand full dosing, schedule, trial evidence, prophylaxis and monitoring.
+<span class="badge b-cat1">Cat 1</span> = NCCN category 1 · <span class="badge b-pre">Preferred</span> ·
+<span class="badge b-alt">Other recommended</span> · <span class="badge b-cir">Certain circumstances</span></p>
+<div class="note warn"><b>Verify every dose</b> against the primary trial publication and your institutional protocol.
+Schedules for the same regimen differ between trials (e.g. 21- vs 28-day cycles, weekly vs twice-weekly bortezomib).
+Doses are body-surface-area or fixed and are not affected by the US/SI toggle; only laboratory reference values change.</div>
+<div id="regList"></div>
+</div>
+</section>
+
+<!-- ============================================================ 5. TOXICITY -->
+<section class="panel" id="panel-tox">
+<div class="card">
+<h2><span class="ico">🛡️</span>Toxicity &amp; Prophylaxis Management</h2>
+<div id="toxList"></div>
+</div>
+</section>
+
+<!-- ============================================================ 6. SUPPORTIVE -->
+<section class="panel" id="panel-sup">
+<div class="card">
+<h2><span class="ico">🧰</span>Supportive Care — All Patients</h2>
+<div class="grid2">
+<div>
+<h3>🦴 Bone health</h3>
+<ul style="padding-left:18px;font-size:.88rem">
+<li><b>Zoledronic acid 4 mg IV every 4 weeks</b> (or every 12 weeks after 1 year if stable) — first-line for all with bone disease.</li>
+<li><b>Denosumab 120 mg SC every 4 weeks</b> — preferred if CrCl &lt;30 mL/min or on dialysis.</li>
+<li>Calcium 500–1000 mg + vitamin D 400–800 IU daily.</li>
+<li>Dental examination before starting; osteonecrosis of the jaw risk with both agents.</li>
+<li>No routine radiotherapy; use for painful focal lesions or cord compression.</li>
+</ul>
+<h3 style="margin-top:16px">🩸 Venous thromboembolism</h3>
+<ul style="padding-left:18px;font-size:.88rem">
+<li>Risk-stratify with <b>IMPEDE-VTE</b> or <b>SAVED</b> score.</li>
+<li><b>Low risk:</b> aspirin 81–325 mg daily.</li>
+<li><b>High risk</b> (IMiD + high-dose dex, prior VTE, obesity, central line, cardiac disease, immobility): <b>LMWH</b> or <b>DOAC</b> (apixaban 2.5 mg BID or rivaroxaban 10 mg daily).</li>
+<li>Continue prophylaxis throughout IMiD therapy; reassess at each cycle.</li>
+</ul>
+</div>
+<div>
+<h3>🦠 Infection prophylaxis</h3>
+<ul style="padding-left:18px;font-size:.88rem">
+<li><b>Herpes zoster:</b> acyclovir 400 mg BID or valacyclovir 500 mg daily for all on proteasome inhibitors or anti-CD38.</li>
+<li><b>PJP:</b> TMP-SMX single-strength daily (or dapsone / atovaquone if sulfa-allergic) for patients on ≥20 mg prednisone-equivalent daily for &gt;4 weeks, or on anti-CD38.</li>
+<li><b>Antibacterial:</b> consider levofloxacin 500 mg daily during the first 2–3 months of bortezomib-based therapy.</li>
+<li><b>IVIG</b> 0.4 g/kg every 4 weeks if IgG &lt;400 mg/dL (&lt;4 g/L) with recurrent infections.</li>
+<li><b>HBV:</b> screen HBsAg, anti-HBc, anti-HBs before anti-CD38; antiviral prophylaxis if positive.</li>
+<li><b>Vaccines:</b> influenza annually, pneumococcal, COVID-19, RSV, recombinant zoster. <b>Avoid live vaccines.</b></li>
+</ul>
+<h3 style="margin-top:16px">🫘 Renal &amp; metabolic</h3>
+<ul style="padding-left:18px;font-size:.88rem">
+<li>Avoid NSAIDs, iodinated contrast, aminoglycosides.</li>
+<li>Maintain hydration ≥2 L/day if tolerated; alkalinise urine if light-chain burden high.</li>
+<li><b>Tumour lysis:</b> allopurinol 300 mg daily (dose-adjust in renal impairment) or rasburicase; monitor uric acid, K⁺, PO₄³⁻, Ca²⁺.</li>
+<li>Plasmapheresis for symptomatic hyperviscosity or acute cast nephropathy with high FLC.</li>
+</ul>
+<h3 style="margin-top:16px">💉 Transplant-specific</h3>
+<ul style="padding-left:18px;font-size:.88rem">
+<li>Mobilisation: G-CSF 10 mcg/kg SC daily ± plerixafor; target ≥2 × 10⁶ CD34⁺/kg (≥4–6 × 10⁶ for tandem).</li>
+<li>Hold lenalidomide ≥2 weeks before apheresis (some protocols 4 weeks).</li>
+<li>Melphalan <b>200 mg/m² IV day −2</b>; reduce to <b>140 mg/m²</b> if CrCl &lt;40 mL/min, age &gt;70, or significant comorbidity.</li>
+<li>Post-transplant: neutropenic fever precautions, mucositis care, engraftment monitoring, revaccination at 6–12 months.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============================================================ 7. REFERENCES -->
+<section class="panel" id="panel-ref">
+<div class="card">
+<h2><span class="ico">📚</span>References</h2>
+<ol class="refs">
+<li>Multiple Myeloma. National Comprehensive Cancer Network. Updated 2026-09-24. <span class="pill">NCCN MYEL-A, MYEL-1, MYEL-B-1, MYEL-H-1, MYEL-H-2, MYEL-5</span></li>
+<li>Rajkumar SV. Multiple myeloma: 2024 update on diagnosis, risk-stratification, and management. <i>Am J Hematol.</i> 2024;99(9):1802-1824. doi:10.1002/ajh.27422</li>
+<li>Cowan AJ, Green DJ, Kwok M, et al. Diagnosis and Management of Multiple Myeloma: A Review. <i>JAMA.</i> 2022;327(5):464-477. doi:10.1001/jama.2022.0003</li>
+<li>Rajkumar SV. Multiple Myeloma: 2026 Update on Diagnosis, Risk-Stratification and Management. <i>Am J Hematol.</i> 2026. doi:10.1002/ajh.70475</li>
+<li>Mouhieddine TH, Anderson KC. Treatment Decisions in Multiple Myeloma. <i>N Engl J Med.</i> 2026;395(10):992-1008. doi:10.1056/NEJMra2605253</li>
+<li>Malard F, Neri P, Bahlis NJ, et al. Multiple myeloma. <i>Nat Rev Dis Primers.</i> 2024;10(1):45. doi:10.1038/s41572-024-00529-7</li>
+<li>Sonneveld P, Dimopoulos MA, Boccadoro M, et al. Daratumumab, Bortezomib, Lenalidomide, and Dexamethasone for Multiple Myeloma (PERSEUS). <i>N Engl J Med.</i> 2024;390(4):301-313. doi:10.1056/NEJMoa2312054</li>
+<li>Banerjee R, Cheung MC, Derman B, et al. Treatment of Multiple Myeloma. <i>J Clin Oncol.</i> 2026;44(22):e113-e124. doi:10.1200/JCO-26-01139</li>
+<li>Durie BGM, Harousseau JL, Miguel JS, et al. International uniform response criteria for multiple myeloma (IMWG). <i>Leukemia.</i> 2006;20(9):1467-1473.</li>
+<li>Kumar S, Paiva B, Anderson KC, et al. International Myeloma Working Group consensus criteria for response and minimal residual disease assessment. <i>Lancet Oncol.</i> 2016;17(8):e328-e346.</li>
+</ol>
+<div class="note" style="margin-top:16px">
+<b>Unit conversion reference</b> used by this tool:
+calcium mg/dL ÷ 4.008 = mmol/L · creatinine mg/dL × 88.4 = µmol/L ·
+hemoglobin g/dL × 10 = g/L · albumin g/dL × 10 = g/L · M-protein g/dL × 10 = g/L.
+β2-microglobulin is reported as mg/L (equivalently µg/mL) in both systems.
+</div>
+</div>
+</section>
+
+</main>
+
+<script>
+/* ================= UTILITIES ================= */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+/* ================= NAV ================= */
+$$('.nav-btn').forEach(b => b.addEventListener('click', () => {
+$$('.nav-btn').forEach(x => x.classList.toggle('active', x === b));
+$$('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + b.dataset.tab));
+window.scrollTo({top:0, behavior:'smooth'});
+}));
+function goTab(name){
+const btn = document.querySelector(`.nav-btn[data-tab="${name}"]`);
+if(btn) btn.click();
+}
+
+/* ================= CHECKBOX STYLING ================= */
+function syncChk(c){
+const box = c.querySelector('input');
+c.classList.toggle('checked', box.checked);
+}
+$$('.chk').forEach(c => {
+const box = c.querySelector('input');
+box.addEventListener('change', () => {
+if(!box.checked) delete box.dataset.auto; // manual uncheck clears auto flag
+syncChk(c);
+});
+syncChk(c);
+});
+
+/* Auto-tick SLiM ≥60% from marrow input */
+$('#bmpc').addEventListener('input', e => {
+const v = parseFloat(e.target.value);
+const t = $('#slimBmpc');
+if(!isNaN(v) && v >= 60){ t.checked = true; }
+syncChk(t.closest('.chk'));
+});
+
+/* ================= UNIT SYSTEM ================= */
+let UNITS = 'US';
+
+const UNIT_DEFS = {
+ca: { US:{lbl:'mg/dL', thr:11, op:'>'}, SI:{lbl:'mmol/L', thr:2.75, op:'>'} },
+cr: { US:{lbl:'mg/dL', thr:2, op:'>'}, SI:{lbl:'µmol/L', thr:177, op:'>'} },
+hgb: { US:{lbl:'g/dL', thr:10, op:'<'}, SI:{lbl:'g/L', thr:100, op:'<'} },
+alb: { US:{lbl:'g/dL'}, SI:{lbl:'g/L'} },
+mprot: { US:{lbl:'g/dL'}, SI:{lbl:'g/L'} }
+};
+
+function setUnits(sys){
+const prev = UNITS;
+UNITS = sys;
+
+/* toggle button state */
+$$('.ut-btn').forEach(b => b.classList.toggle('active', b.dataset.unit === sys));
+
+/* unit labels */
+$$('.u-ca').forEach(e => e.textContent = UNIT_DEFS.ca[sys].lbl);
+$$('.u-cr').forEach(e => e.textContent = UNIT_DEFS.cr[sys].lbl);
+$$('.u-hgb').forEach(e => e.textContent = UNIT_DEFS.hgb[sys].lbl);
+$$('.u-alb').forEach(e => e.textContent = UNIT_DEFS.alb[sys].lbl);
+$$('.u-mprot').forEach(e => e.textContent = UNIT_DEFS.mprot[sys].lbl);
+
+/* swap all data-us / data-si text nodes */
+$$('[data-us]').forEach(el => {
+const v = el.getAttribute('data-' + sys.toLowerCase());
+if(v !== null) el.textContent = v;
+});
+
+/* convert numeric input values so the clinical value stays constant */
+if(prev !== sys){
+conv('#alb', sys === 'SI' ? 10 : 1/10);
+conv('#mprot', sys === 'SI' ? 10 : 1/10);
+conv('#caVal', sys === 'SI' ? 1/4.008: 4.008);
+conv('#crVal', sys === 'SI' ? 88.4 : 1/88.4);
+conv('#hgbVal', sys === 'SI' ? 10 : 1/10);
+}
+
+evalNumInputs();
+runDx();
+runRisk();
+if($('#rxOut').innerHTML.trim()) recommend();
+}
+
+function conv(sel, factor){
+const el = $(sel); if(!el) return;
+const v = parseFloat(el.value); if(isNaN(v)) return;
+const c = v * factor;
+el.value = parseFloat(c.toFixed(c < 1 ? 3 : 2)).toString();
+}
+
+function evalNumInputs(){
+const d = UNIT_DEFS[UNITS];
+evalOne('#caVal', d.ca, '.caHint', '#crabCa', 'Calcium');
+evalOne('#crVal', d.cr, '.crHint', '#crabCr', 'Creatinine');
+evalOne('#hgbVal', d.hgb, '.hgbHint', '#crabHgb', 'Hemoglobin');
+}
+
+function evalOne(sel, def, hintSel, cbSel, name){
+const el = $(sel), hint = $(hintSel), cb = $(cbSel);
+if(!el || !hint) return;
+const v = parseFloat(el.value);
+const meets = !isNaN(v) && (def.op === '>' ? v > def.thr : v < def.thr);
+
+if(isNaN(v)){
+hint.textContent = `Threshold: ${def.op}${def.thr} ${def.lbl}`;
+hint.style.color = 'var(--muted)';
+} else if(meets){
+hint.textContent = `✓ Meets CRAB threshold (${def.op}${def.thr} ${def.lbl})`;
+hint.style.color = 'var(--green)';
+} else {
+hint.textContent = `Below threshold (${def.op}${def.thr} ${def.lbl})`;
+hint.style.color = 'var(--muted)';
+}
+
+if(cb){
+if(meets){ cb.checked = true; cb.dataset.auto = sel; }
+else if(cb.dataset.auto === sel){ cb.checked = false; delete cb.dataset.auto; }
+syncChk(cb.closest('.chk'));
+}
+}
+
+/* live re-evaluation as the user types */
+['#caVal','#crVal','#hgbVal'].forEach(s => {
+const el = $(s);
+if(el) el.addEventListener('input', () => { evalNumInputs(); runDx(); });
+});
+
+/* unit-aware display helper */
+function dispMprot(gdl){
+return UNITS === 'SI' ? (gdl * 10).toFixed(1) + ' g/L' : gdl + ' g/dL';
+}
+
+/* ================= 1. DIAGNOSIS ================= */
+function runDx(){
+const raw = $('#bmpc').value.trim();
+const bmpc = raw === '' ? null : parseFloat(raw);
+const plasmacytoma = $('#plasmacytoma').checked;
+
+let mprot = parseFloat($('#mprot').value) || 0;
+if(UNITS === 'SI') mprot = mprot / 10; // normalise to g/dL internally
+const bj = parseFloat($('#bj').value) || 0; // mg/24 h — same in both systems
+
+const crab = $$('.crab:checked').map(c => c.dataset.label);
+const slim = $$('.slim:checked').map(c => c.dataset.label);
+const events = [...crab, ...slim];
+
+const hasClone = (bmpc !== null && bmpc >= 10) || plasmacytoma;
+const cloneTxt = plasmacytoma
+? 'biopsy-proven plasmacytoma'
+: (bmpc !== null ? `clonal BMPC ${bmpc}%` : 'clonal plasma cells not documented');
+
+const mprotThr = UNITS === 'SI' ? '30 g/L' : '3 g/dL';
+
+let cls, icon, title, body;
+
+if(hasClone && events.length > 0){
+cls='v-red'; icon='🔴'; title='Active (symptomatic) multiple myeloma';
+body = `<b>Meets IMWG criteria.</b> ${cloneTxt} plus ${events.length} myeloma-defining event${events.length>1?'s':''}:
+<b>${events.join(', ')}</b>. Proceed to staging, risk stratification and initiation of therapy.`;
+} else if(!hasClone && events.length > 0){
+cls='v-amber'; icon='🟠'; title='Myeloma-defining event present — clonal criterion not documented';
+body = `Event(s) present: <b>${events.join(', ')}</b>, but the clonal plasma-cell criterion is not met or not yet documented.
+Obtain bone marrow aspirate/biopsy (± plasmacytoma biopsy). If BMPC remains &lt;10% and no plasmacytoma, the event may be
+attributable to another cause — pursue differential diagnosis.`;
+} else if(hasClone && events.length === 0){
+if(bmpc === null && !plasmacytoma){
+cls='v-amber'; icon='🟠'; title='Incomplete data'; body='Enter marrow plasma-cell percentage or plasmacytoma status.';
+} else {
+const bmpcSmolder = bmpc !== null && bmpc >= 10 && bmpc <= 59;
+const proteinSmolder = mprot >= 3 || bj >= 500;
+if(bmpcSmolder || proteinSmolder){
+cls='v-amber'; icon='🟡'; title='Smoldering (asymptomatic) multiple myeloma';
+const why = [];
+if(bmpcSmolder) why.push(`clonal BMPC ${bmpc}% (10–59%)`);
+if(mprot >= 3) why.push(`serum M-protein ${dispMprot(mprot)} (≥${mprotThr})`);
+if(bj >= 500) why.push(`Bence-Jones protein ${bj} mg/24 h (≥500)`);
+body = `Criteria met: <b>${why.join('; ')}</b>. <b>No</b> myeloma-defining events and no amyloidosis.
+Management is observation or enrolment in a risk-adapted early-intervention trial — not standard anti-myeloma therapy.
+Use whole-body MRI to confirm absence of focal lesions.`;
+} else {
+cls='v-green'; icon='🟢'; title='Smoldering myeloma vs MGUS — marrow-dependent';
+body = `No myeloma-defining events and no high-risk protein marker. If BMPC is 10–59%, this is <b>smoldering myeloma</b>
+(observation). If BMPC &lt;10% with M-protein below ${mprotThr}, this is <b>MGUS</b>. Repeat testing in 3–6 months to confirm stability.`;
+}
+}
+} else {
+const proteinSmolder = mprot >= 3 || bj >= 500;
+if(proteinSmolder){
+cls='v-amber'; icon='🟡'; title='Smoldering myeloma — marrow criterion not documented';
+const bits = [];
+if(mprot >= 3) bits.push(`serum ${dispMprot(mprot)}`);
+if(bj >= 500) bits.push(`urine ${bj} mg/24 h`);
+body = `M-protein threshold met (${bits.join(' and ')}),
+but no myeloma-defining events. Obtain bone marrow biopsy to complete classification.`;
+} else {
+cls='v-green'; icon='🟢'; title='MGUS or no plasma-cell disorder identified';
+body = `Clonal plasma cells &lt;10%, M-protein below ${mprotThr}, Bence-Jones &lt;500 mg/24 h, and no myeloma-defining events. ` +
+'If MGUS is confirmed, risk-stratify (e.g. Mayo 20/2/20 model) and monitor. Consider alternative diagnoses for any abnormal findings.';
+}
+}
+
+const evList = events.length
+? events.map(e => `<span class="pill">${e}</span>`).join('')
+: '<span class="small">none selected</span>';
+
+$('#dxOut').innerHTML = `
+<div class="verdict ${cls}">
+<div class="em">${icon}</div>
+<div style="flex:1">
+<h3>${title}</h3>
+<p>${body}</p>
+</div>
+</div>
+<div style="margin-top:14px">
+<div class="small" style="margin-bottom:6px"><b>Events captured</b></div>${evList}
+</div>
+<div class="note" style="margin-top:14px">
+<b>Reminder:</b> also exclude AL amyloidosis, POEMS, Waldenström macroglobulinaemia and solitary plasmacytoma without marrow involvement —
+these require different workup and treatment.
+</div>`;
+}
+
+/* ================= 2. RISK ================= */
+function runRisk(){
+const b2m = parseFloat($('#b2m').value);
+let alb = parseFloat($('#alb').value);
+if(UNITS === 'SI' && !isNaN(alb)) alb = alb / 10; // g/L → g/dL for staging
+const ldh = $('#ldh').value;
+const hr = $$('.hrca:checked').map(x => x.dataset.label);
+
+if(isNaN(b2m) || isNaN(alb)){
+$('#riskOut').innerHTML = `<div class="verdict v-amber"><div class="em">🟠</div><div>
+<h3>Enter β2-microglobulin and albumin</h3><p>Both values are required for ISS staging.</p></div></div>`;
+return;
+}
+
+/* ISS */
+let iss, issWhy;
+if(b2m >= 5.5){ iss = 'III'; issWhy = `β2-microglobulin ${b2m} mg/L (≥5.5)`; }
+else if(b2m < 3.5 && alb >= 3.5){ iss = 'I'; issWhy = `β2-microglobulin ${b2m} mg/L (&lt;3.5) and albumin ≥3.5 g/dL`; }
+else { iss = 'II'; issWhy = 'neither stage I nor stage III criteria met'; }
+
+/* R-ISS */
+const coreHR = hr.filter(x => ['del(17p)','TP53 mutation','t(4;14)','t(14;16)'].includes(x));
+const extHR = hr.filter(x => !['del(17p)','TP53 mutation','t(4;14)','t(14;16)'].includes(x));
+
+let riss;
+if(iss === 'III' && (ldh === 'high' || coreHR.length > 0)) riss = 'III';
+else if(iss === 'I' && ldh === 'normal' && coreHR.length === 0) riss = 'I';
+else riss = 'II';
+
+const rissColor = { I:'v-green', II:'v-amber', III:'v-red' }[riss];
+const rissMeaning = {
+I: '5-year OS ~82% — favourable',
+II: '5-year OS ~62% — intermediate',
+III:'5-year OS ~40% — adverse'
+}[riss];
+
+const hrBadge = hr.length === 0
+? '<span class="badge b-pre">Standard risk</span>'
+: (hr.length === 1 ? '<span class="badge b-hr">High risk</span>'
+: '<span class="badge b-hr">Double-hit / ultra high risk</span>');
+
+const albDisp = UNITS === 'SI'
+? (alb * 10).toFixed(0) + ' g/L'
+: alb.toFixed(1) + ' g/dL';
+
+$('#riskOut').innerHTML = `
+<div class="grid2">
+<div class="verdict ${rissColor}"><div class="em">${riss==='I'?'🟢':riss==='II'?'🟡':'🔴'}</div>
+<div><h3>R-ISS Stage ${riss}</h3><p>${rissMeaning}</p>
+<p class="small" style="margin-top:6px;color:inherit;opacity:.85">ISS ${iss} · LDH ${ldh==='high'?'elevated':'normal'} · ${coreHR.length} R-ISS high-risk abnormality(ies)</p></div>
+</div>
+<div class="verdict v-blue"><div class="em">📈</div>
+<div><h3>Risk profile</h3><p>${hrBadge}</p>
+<p class="small" style="margin-top:6px;color:inherit;opacity:.85">
+${hr.length ? 'Detected: ' + hr.join(', ') : 'No high-risk cytogenetic abnormalities selected.'}
+${extHR.length ? '<br><b>Extended-risk markers present:</b> ' + extHR.join(', ') + ' — these fall outside the R-ISS definition but worsen prognosis and favour intensified therapy.' : ''}
+</p></div>
+</div>
+</div>
+
+<table style="margin-top:16px">
+<thead><tr><th>Component</th><th>Value</th><th>Contribution</th></tr></thead>
+<tbody>
+<tr><td class="drug">β2-microglobulin</td><td class="dose">${b2m} mg/L</td><td>${b2m>=5.5?'Stage III marker':b2m<3.5?'Stage I marker':'Stage II'}</td></tr>
+<tr><td class="drug">Albumin</td><td class="dose">${albDisp}</td><td>${alb>=3.5?'Stage I marker':'Stage II/III contributor'}</td></tr>
+<tr><td class="drug">LDH</td><td class="dose">${ldh==='high'?'Elevated':'Normal'}</td><td>${ldh==='high'?'Adverse for R-ISS':'Favourable'}</td></tr>
+<tr><td class="drug">ISS</td><td class="dose">${iss}</td><td>${issWhy}</td></tr>
+<tr><td class="drug">R-ISS</td><td class="dose">${riss}</td><td>Integrates ISS + LDH + del(17p)/t(4;14)/t(14;16)</td></tr>
+<tr><td class="drug">High-risk abnormalities</td><td class="dose">${hr.length}</td><td>${hr.length>=2?'Double-hit — consider clinical trial, tandem ASCT, doublet maintenance':'—'}</td></tr>
+</tbody>
+</table>
+
+<div class="note ${hr.length>=2?'dang':'warn'}">
+<b>Prognostic note:</b> ${hr.length>=2
+? 'Double-hit disease carries a median PFS often under 2 years with standard triplet therapy. Intensified quadruplet induction, consideration of tandem autologous transplant, and two-drug maintenance are strongly favoured. Clinical trial enrolment should be prioritised.'
+: hr.length===1
+? 'Single high-risk abnormality: use quadruplet induction and plan two-drug maintenance rather than single-agent lenalidomide.'
+: 'Standard-risk disease: single-agent lenalidomide maintenance is appropriate and well tolerated.'}
+</div>`;
+}
+
+/* ================= 3. TREATMENT ENGINE ================= */
+function recommend(){
+const elig = $('#txElig').value;
+const frail = $('#frail').value;
+const age = $('#age').value;
+const renal = $('#renal').value;
+const neuro = $('#neuro').value;
+const cardiac= $('#cardiac').value;
+const hrN = parseInt($('#hrCount').value);
+const burden = $('#burden').value;
+
+const recs = [];
+const cautions = [];
+let primary = null;
+
+if(renal === 'yes'){
+primary = {
+key:'cybord',
+label:'Bortezomib / Cyclophosphamide / Dexamethasone ± Daratumumab',
+why:'Bortezomib and daratumumab are not renally cleared, making this the safest backbone in severe renal impairment. Cyclophosphamide requires no dose adjustment in renal failure.'
+};
+cautions.push('Renal impairment detected: avoid lenalidomide as the initial IMiD (or dose-reduce to 10 mg if CrCl 30–60, 15 mg alternate days if &lt;30). Avoid NSAIDs and iodinated contrast. Consider plasmapheresis if cast nephropathy with high free light chains.');
+if(hrN >= 1){
+recs.push({key:'daracybord', label:'Daratumumab + CyBorD', why:'Adds anti-CD38 to the renally safe backbone for high-risk disease.'});
+}
+}
+else if(neuro === 'yes'){
+primary = {
+key:'darakrd',
+label:'Daratumumab + Carfilzomib / Lenalidomide / Dexamethasone (Dara-KRd)',
+why:'Carfilzomib substitutes for bortezomib, avoiding further proteasome-inhibitor-driven neuropathy while preserving quadruplet intensity.'
+};
+cautions.push('Pre-existing grade ≥2 neuropathy: prefer subcutaneous bortezomib (if used at all) with weekly dosing, or switch to carfilzomib. Monitor for carfilzomib-related cardiovascular and pulmonary toxicity.');
+}
+else if(hrN >= 1){
+primary = {
+key:'daravrd',
+label:'Daratumumab + Bortezomib / Lenalidomide / Dexamethasone (Dara-VRd)',
+why:'Quadruplet therapy is mandatory in high-risk disease. Dara-VRd roughly doubled deep and sustained MRD negativity versus VRd in PERSEUS.'
+};
+recs.push({key:'isavrd', label:'Isatuximab + VRd (Isa-VRd) — equivalent alternative',
+why:'GMMG-HD7 and IMROZ support Isa-VRd with comparable PFS benefit and a similar toxicity profile.'});
+}
+else {
+primary = {
+key:'daravrd',
+label:'Daratumumab + Bortezomib / Lenalidomide / Dexamethasone (Dara-VRd)',
+why:'Category 1 preferred quadruplet for newly diagnosed myeloma. PERSEUS showed 4-year PFS 84.3% vs 67.7% versus VRd (HR 0.42).'
+};
+recs.push({key:'isavrd', label:'Isatuximab + VRd (Isa-VRd) — equivalent alternative',
+why:'Equally preferred; ASCO 2026 recommends either anti-CD38 agent added to VRd.'});
+}
+
+if(burden === 'high'){
+recs.push({key:'vtdpace', label:'VTD-PACE (aggressive disease / plasma cell leukaemia)',
+why:'For plasma cell leukaemia, extensive extramedullary disease, or rapidly progressive disease where immediate cytoreduction is required.'});
+}
+
+let transplantTxt = '';
+if(elig === 'yes'){
+transplantTxt = 'Eligible for autologous transplant: proceed with stem-cell collection after 3–4 induction cycles. Renal dysfunction and advanced age are <b>not</b> contraindications. Consider tandem transplant if high-risk cytogenetics or suboptimal response.';
+} else if(elig === 'deferred'){
+transplantTxt = 'Transplant deferred: continue quadruplet induction and <b>collect and cryopreserve stem cells</b> while the patient is stable, so transplant remains an option at relapse or progression.';
+} else {
+transplantTxt = 'Not a transplant candidate: continue quadruplet (or attenuated) therapy to best response, then transition to continuous maintenance.';
+}
+
+if(frail === 'yes' || age === 'ge80'){
+cautions.push('Frailty / age ≥80: use <b>frailty-adjusted dosing</b> — dexamethasone 20 mg weekly (not 40 mg), lenalidomide 15 mg days 1–21, and consider VRd-lite. For very frail patients, D-Rd or Isa-Rd is preferred over a quadruplet.');
+recs.push({key:'vrdlite', label:'VRd-lite (frail-adapted)',
+why:'Lower-dose bortezomib, lenalidomide and dexamethasone for patients who cannot tolerate full-intensity quadruplet therapy.'});
+recs.push({key:'drd', label:'Daratumumab + Lenalidomide / Dexamethasone (D-Rd)',
+why:'MAIA established D-Rd as a frontline standard for transplant-ineligible patients; consider early dexamethasone discontinuation in older adults.'});
+}
+
+if(cardiac === 'yes'){
+cautions.push('Cardiac history: <b>avoid carfilzomib</b> if there is uncontrolled hypertension, heart failure, arrhythmia or ischaemic disease. Bortezomib-based quadruplets are preferred. If carfilzomib is unavoidable, obtain baseline ECG and echocardiogram, control blood pressure strictly, and hydrate cautiously.');
+}
+
+if(hrN >= 2){
+cautions.push('Double-hit / ultra high-risk disease: prioritise <b>clinical trial enrolment</b>. Consider Isa-KRd or Dara-KRd, tandem autologous transplant, and <b>two-drug maintenance</b> (lenalidomide + daratumumab or carfilzomib + lenalidomide). Sustained MRD negativity is the primary therapeutic goal.');
+}
+
+let maint;
+if(hrN >= 1){
+maint = {
+label:'Two-drug maintenance: Lenalidomide + Daratumumab <span class="small">or</span> Carfilzomib + Lenalidomide',
+why:'High-risk disease requires doublet maintenance. FORTE (KR) and AURIGA (Dara-R) both showed PFS benefit over lenalidomide alone in this population. Continue until progression or unacceptable toxicity.'
+};
+} else {
+maint = {
+label:'Lenalidomide 10–15 mg days 1–21 of a 28-day cycle',
+why:'NCCN category 1 preferred maintenance for standard-risk disease. ASCO recommends at least 2 years; many centres continue until progression. Counsel on the ~6% secondary malignancy risk.'
+};
+}
+
+const primaryCard = primary ? `
+<div class="verdict v-blue" style="margin-bottom:14px">
+<div class="em">💊</div>
+<div style="flex:1">
+<h3>${primary.label}</h3>
+<p>${primary.why}</p>
+<div class="btnrow" style="margin-top:8px">
+<button class="btn ghost" onclick="jumpReg('${primary.key}')">View full dosing →</button>
+</div>
+</div>
+</div>` : '';
+
+const altCards = recs.map(r => `
+<div class="verdict v-green" style="margin-bottom:10px">
+<div class="em">↔️</div>
+<div style="flex:1">
+<h3 style="font-size:.95rem">${r.label}</h3>
+<p>${r.why}</p>
+<div class="btnrow" style="margin-top:6px">
+<button class="btn ghost" style="padding:6px 12px;font-size:.8rem" onclick="jumpReg('${r.key}')">Dosing →</button>
+</div>
+</div>
+</div>`).join('');
+
+const cautionHtml = cautions.length ? `
+<div class="note dang" style="margin-top:16px">
+<b>⚠ Case-specific cautions</b>
+<ul style="margin:8px 0 0;padding-left:18px">${cautions.map(c=>`<li style="margin-bottom:6px">${c}</li>`).join('')}</ul>
+</div>` : '';
+
+$('#rxOut').innerHTML = `
+<div class="stepper">
+<div class="step on"><b>Step 1</b>Quadruplet induction</div>
+<div class="step on"><b>Step 2</b>${elig==='no'?'Continue to best response':'Stem-cell collection'}</div>
+<div class="step on"><b>Step 3</b>${elig==='no'?'—':'Autologous transplant'}</div>
+<div class="step on"><b>Step 4</b>Maintenance until progression</div>
+</div>
+
+${primaryCard}
+${altCards}
+
+<div class="verdict v-green" style="margin-top:16px">
+<div class="em">🔁</div>
+<div style="flex:1">
+<h3>Maintenance</h3>
+<p><b>${maint.label}</b></p>
+<p>${maint.why}</p>
+</div>
+</div>
+
+<div class="note" style="margin-top:16px"><b>Transplant strategy:</b> ${transplantTxt}</div>
+${cautionHtml}
+
+<div class="note warn" style="margin-top:16px">
+<b>Always reassess.</b> Response should be evaluated by IMWG criteria after each 2–3 cycles using SPEP/SIFE, serum free light chains,
+and 24-h urine studies. Consider MRD testing (NGS or next-generation flow) at and after best response — sustained MRD negativity
+is the strongest predictor of long-term outcome. Remember that <b>daratumumab and isatuximab interfere with SPEP/IFE</b>;
+use an anti-idiotype assay or mass spectrometry to distinguish drug from M-protein.
+</div>`;
+}
+
+function jumpReg(key){
+goTab('reg');
+setTimeout(() => {
+const el = document.getElementById('reg-' + key);
+if(!el) return;
+if(!el.classList.contains('open')) el.querySelector('.reg-h').click();
+el.scrollIntoView({behavior:'smooth', block:'center'});
+el.classList.add('flash');
+setTimeout(()=>el.classList.remove('flash'), 1800);
+}, 220);
+}
+
+/* ================= 4. REGIMEN DATA ================= */
+const REGIMENS = [
+{
+id:'daravrd',
+name:'Dara-VRd',
+full:'Daratumumab + Bortezomib + Lenalidomide + Dexamethasone',
+badges:['<span class="badge b-cat1">Category 1</span>','<span class="badge b-pre">Preferred</span>'],
+setting:'Newly diagnosed MM — transplant-eligible, transplant-deferred, and fit transplant-ineligible',
+cycle:'28-day cycles',
+trial:'PERSEUS: 4-year PFS 84.3% vs 67.7% vs VRd (HR 0.42); GRIFFIN: improved MRD negativity and PFS',
+drugs:[
+['Daratumumab','16 mg/kg IV <i>or</i> 1,800 mg SC',
+'Cycles 1–2: days 1, 8, 15, 22 (weekly)<br>Cycles 3–6: days 1, 15 (q2w)<br>Cycle 7 onward: day 1 (q4w)',
+'Premedicate 1 h before IV infusion: dexamethasone 20 mg (or methylprednisolone 100 mg), diphenhydramine 25–50 mg, acetaminophen 650–1000 mg. First IV dose may be split over 2 days. SC formulation has a lower infusion-reaction rate.'],
+['Bortezomib','1.3 mg/m² SC',
+'Cycles 1–2: days 1, 8, 15, 22<br>Cycles 3–8: days 1, 8, 15<br>Stop after cycle 8',
+'Subcutaneous route markedly reduces peripheral neuropathy versus IV. Give with acyclovir/valacyclovir prophylaxis for herpes zoster.'],
+['Lenalidomide','25 mg PO',
+'Days 1–21 of each 28-day cycle',
+'Reduce to 10 mg if CrCl 30–60 mL/min; 15 mg every other day if CrCl &lt;30; 5 mg after dialysis. Mandatory REMS programme with two forms of contraception.'],
+['Dexamethasone','40 mg PO/IV',
+'Days 1, 8, 15, 22 (weekly)',
+'Reduce to 20 mg weekly if age &gt;75, frail, or poorly tolerant of steroids.']
+],
+prophylaxis:[
+'Herpes zoster: acyclovir 400 mg BID or valacyclovir 500 mg daily',
+'PJP: TMP-SMX single-strength daily while on steroids + anti-CD38',
+'VTE: aspirin if low risk; LMWH or DOAC if high risk (IMiD + high-dose dexamethasone)',
+'Bone: zoledronic acid 4 mg IV q4w (or denosumab 120 mg SC q4w if renal impairment)',
+'HBV screening before daratumumab; antiviral prophylaxis if HBsAg or anti-HBc positive'
+],
+monitor:[
+'CBC with differential each cycle — lenalidomide myelosuppression',
+'Creatinine, calcium, LFTs, albumin each cycle',
+'Blood pressure and glucose — dexamethasone effect',
+'Peripheral neuropathy assessment at every visit (bortezomib)',
+'Immunoglobulins; consider IVIG if IgG &lt;400 mg/dL (&lt;4 g/L) with recurrent infection'
+]
+},
+{
+id:'isavrd',
+name:'Isa-VRd',
+full:'Isatuximab-irfc + Bortezomib + Lenalidomide + Dexamethasone',
+badges:['<span class="badge b-cat1">Category 1</span>','<span class="badge b-pre">Preferred</span>'],
+setting:'Newly diagnosed MM — transplant-eligible and fit transplant-ineligible',
+cycle:'28-day cycles',
+trial:'GMMG-HD7 (MRD negativity benefit) and IMROZ (PFS benefit in transplant-ineligible patients)',
+drugs:[
+['Isatuximab-irfc','10 mg/kg IV',
+'Cycle 1: days 1, 8, 15, 22 (weekly)<br>Cycles 2–6: days 1, 15 (q2w)<br>Cycle 7 onward: day 1 (q4w)',
+'Premedicate with dexamethasone, antihistamine and antipyretic. Infusion duration 75 min initially, shortening with subsequent doses if tolerated. <b>Verify the exact schedule against the primary protocol</b> — trial schedules vary.'],
+['Bortezomib','1.3 mg/m² SC',
+'Cycles 1–2: days 1, 8, 15, 22<br>Cycles 3–8: days 1, 8, 15',
+'Subcutaneous administration preferred to limit neuropathy.'],
+['Lenalidomide','25 mg PO',
+'Days 1–21',
+'Dose-adjust for renal impairment (see Dara-VRd). REMS required.'],
+['Dexamethasone','20–40 mg PO/IV',
+'Days 1, 8, 15, 22 (weekly)',
+'20 mg is commonly used with the isatuximab-containing quadruplet; use 40 mg if tolerated.']
+],
+prophylaxis:[
+'Herpes zoster prophylaxis with acyclovir or valacyclovir',
+'PJP prophylaxis with TMP-SMX while on steroids + anti-CD38',
+'VTE risk assessment and prophylaxis as per Dara-VRd',
+'Zoledronic acid or denosumab for bone disease'
+],
+monitor:[
+'Infusion reactions — most common with the first infusion',
+'CBC, renal function, calcium, LFTs',
+'Blood pressure and glycaemia',
+'Note: isatuximab may interfere with SPEP/IFE — use anti-idiotype or mass-spectrometry assays where available'
+]
+},
+{
+id:'darakrd',
+name:'Dara-KRd',
+full:'Daratumumab + Carfilzomib + Lenalidomide + Dexamethasone',
+badges:['<span class="badge b-alt">Other recommended</span>'],
+setting:'Newly diagnosed MM — preferred when bortezomib-induced neuropathy is a concern; frequently used in high-risk disease',
+cycle:'28-day cycles',
+trial:'MANHATTAN, ADVANCE, and others in high-risk NDMM',
+drugs:[
+['Daratumumab','16 mg/kg IV or 1,800 mg SC',
+'Weekly cycles 1–2 → q2w cycles 3–6 → q4w thereafter',
+'Premedicate as for Dara-VRd.'],
+['Carfilzomib','20 mg/m² then 27 mg/m² IV<br><span class="small">(or 20 → 56 mg/m² once-weekly)</span>',
+'Cycle 1: 20 mg/m² on days 1, 2<br>Cycle 1 onward: 27 mg/m² on days 1, 2, 8, 9, 15, 16<br><b>Once-weekly alternative:</b> 20 mg/m² day 1, then 56 mg/m² days 1, 8, 15',
+'Hydrate with 250–500 mL normal saline before and after (reduce if heart failure). Premedicate with dexamethasone. <b>Contraindicated in uncontrolled hypertension or active cardiac disease.</b>'],
+['Lenalidomide','25 mg PO','Days 1–21','REMS required; renal dose adjustment.'],
+['Dexamethasone','40 mg PO/IV','Days 1, 8, 15, 22','20 mg with once-weekly carfilzomib regimens.']
+],
+prophylaxis:[
+'Herpes zoster prophylaxis — mandatory with proteasome inhibitors',
+'PJP prophylaxis',
+'VTE prophylaxis (IMiD + steroid)',
+'Bone-directed therapy',
+'Tumour lysis prophylaxis: allopurinol + hydration, especially with high tumour burden'
+],
+monitor:[
+'<b>Cardiac:</b> baseline ECG and echocardiogram; monitor blood pressure at every visit; ask about chest pain, dyspnoea, palpitations, oedema',
+'<b>Renal:</b> creatinine and urine protein each cycle — risk of acute kidney injury and thrombotic microangiopathy',
+'<b>Pulmonary:</b> dyspnoea may reflect pulmonary hypertension or interstitial disease',
+'CBC, LFTs, calcium'
+]
+},
+{
+id:'isakrd',
+name:'Isa-KRd',
+full:'Isatuximab-irfc + Carfilzomib + Lenalidomide + Dexamethasone',
+badges:['<span class="badge b-alt">Other recommended</span>'],
+setting:'High-risk newly diagnosed MM, including double-hit disease; also used in transplant-eligible and ineligible patients',
+cycle:'28-day cycles',
+trial:'GMMG-CONCEPT: MRD negativity 67.7% after consolidation in transplant-eligible high-risk patients, with 62.6% sustained at 1 year',
+drugs:[
+['Isatuximab-irfc','10 mg/kg IV','Weekly ×4 (cycle 1), then every 2 weeks, then every 4 weeks','Premedicate with dexamethasone, antihistamine and antipyretic.'],
+['Carfilzomib','20 mg/m² then 27 mg/m² IV <span class="small">(or 56 mg/m² once weekly)</span>',
+'Cycle 1: 20 mg/m² days 1, 2<br>Thereafter: 27 mg/m² days 1, 2, 8, 9, 15, 16',
+'Strict cardiovascular monitoring. Hydration before and after infusion.'],
+['Lenalidomide','25 mg PO','Days 1–21','REMS required; renal dose adjustment.'],
+['Dexamethasone','40 mg PO/IV','Days 1, 8, 15, 22','20 mg if frail or &gt;75 years.']
+],
+prophylaxis:[
+'Herpes zoster prophylaxis',
+'PJP prophylaxis',
+'VTE prophylaxis',
+'Bone-directed therapy',
+'Tumour lysis prophylaxis in high-burden disease'
+],
+monitor:[
+'Blood pressure, ECG, echocardiogram (carfilzomib cardiotoxicity)',
+'Creatinine and urine protein (carfilzomib nephrotoxicity)',
+'CBC, LFTs, calcium, glucose',
+'Infusion reactions to isatuximab',
+'MRD assessment at and after best response — the primary therapeutic goal in high-risk disease'
+]
+},
+{
+id:'vrd',
+name:'VRd',
+full:'Bortezomib + Lenalidomide + Dexamethasone',
+badges:['<span class="badge b-cat1">Category 1</span>','<span class="badge b-cir">Certain circumstances</span>'],
+setting:'Newly diagnosed MM when an anti-CD38 antibody is unavailable, contraindicated, or not tolerated; backbone of the quadruplet regimens',
+cycle:'21-day cycles',
+trial:'SWOG S0777: VRd superior to Rd in transplant-ineligible patients',
+drugs:[
+['Bortezomib','1.3 mg/m² SC','Days 1, 4, 8, 11','Weekly scheduling (days 1, 8, 15 of a 28-day cycle) reduces neuropathy and is often preferred.'],
+['Lenalidomide','25 mg PO','Days 1–14','REMS required; renal dose adjustment.'],
+['Dexamethasone','40 mg PO','Days 1, 2, 4, 5, 8, 9, 11, 12 <span class="small">or</span> 40 mg weekly','Reduce to 20 mg in frail or elderly patients.']
+],
+prophylaxis:['Herpes zoster prophylaxis','VTE prophylaxis','Bone-directed therapy'],
+monitor:['Peripheral neuropathy at each visit','CBC, renal function, calcium, glucose']
+},
+{
+id:'krd',
+name:'KRd',
+full:'Carfilzomib + Lenalidomide + Dexamethasone',
+badges:['<span class="badge b-cir">Certain circumstances</span>'],
+setting:'Bortezomib-intolerant patients or bortezomib-induced neuropathy; backbone of quadruplets',
+cycle:'28-day cycles',
+trial:'ASPIRE (relapsed/refractory); FORTE (newly diagnosed, including high-risk subgroups)',
+drugs:[
+['Carfilzomib','20 mg/m² then 27 mg/m² IV','Cycle 1: days 1, 2 at 20 mg/m²<br>Then 27 mg/m² days 1, 2, 8, 9, 15, 16','Once-weekly 56 mg/m² is an alternative. Hydrate; monitor cardiac and renal function.'],
+['Lenalidomide','25 mg PO','Days 1–21','REMS required.'],
+['Dexamethasone','40 mg PO/IV','Days 1, 8, 15, 22','20 mg with once-weekly carfilzomib.']
+],
+prophylaxis:['Herpes zoster prophylaxis','VTE prophylaxis','Bone-directed therapy','Tumour lysis prophylaxis in high burden'],
+monitor:['Blood pressure, ECG, echocardiogram','Creatinine and urine protein','CBC, LFTs, calcium, glucose']
+},
+{
+id:'drd',
+name:'D-Rd',
+full:'Daratumumab + Lenalidomide + Dexamethasone',
+badges:['<span class="badge b-cat1">Category 1</span>','<span class="badge b-pre">Preferred (transplant-ineligible)</span>'],
+setting:'Transplant-ineligible patients, particularly those ≥75 years or frail, where a proteasome inhibitor is undesirable',
+cycle:'28-day cycles',
+trial:'MAIA: D-Rd significantly improved PFS and OS versus Rd in transplant-ineligible NDMM',
+drugs:[
+['Daratumumab','16 mg/kg IV or 1,800 mg SC','Weekly cycles 1–2 → q2w cycles 3–6 → q4w thereafter','Premedicate. SC preferred for convenience and lower infusion-reaction rate.'],
+['Lenalidomide','25 mg PO','Days 1–21','Reduce to 10 mg if CrCl 30–60 mL/min.'],
+['Dexamethasone','40 mg PO/IV','Days 1, 8, 15, 22','Consider early dexamethasone discontinuation in older adults to reduce toxicity.']
+],
+prophylaxis:['Herpes zoster prophylaxis','PJP prophylaxis','VTE prophylaxis','Bone-directed therapy'],
+monitor:['CBC, renal function, calcium, glucose','Infusion reactions','Immunoglobulins and infection surveillance']
+},
+{
+id:'vrdlite',
+name:'VRd-lite',
+full:'Reduced-dose Bortezomib + Lenalidomide + Dexamethasone',
+badges:['<span class="badge b-cir">Certain circumstances</span>'],
+setting:'Frail, older, or highly comorbid patients who cannot tolerate full-intensity therapy',
+cycle:'28-day cycles',
+trial:'Phase 2 frailty-adapted studies in older adults',
+drugs:[
+['Bortezomib','1.3 mg/m² SC','Days 1, 8, 15','Weekly scheduling reduces neuropathy.'],
+['Lenalidomide','15 mg PO','Days 1–21','Lower starting dose for frailty.'],
+['Dexamethasone','20 mg PO','Days 1, 8, 15, 22','Deliberately reduced from 40 mg.']
+],
+prophylaxis:['Herpes zoster prophylaxis','VTE prophylaxis','Bone-directed therapy'],
+monitor:['CBC, renal function, calcium, glucose','Frailty assessment and functional status at each cycle','Dose escalation if well tolerated']
+},
+{
+id:'cybord',
+name:'CyBorD ± Daratumumab',
+full:'Cyclophosphamide + Bortezomib + Dexamethasone (± Daratumumab)',
+badges:['<span class="badge b-cir">Certain circumstances</span>'],
+setting:'Severe renal insufficiency (CrCl &lt;40 mL/min or dialysis), or where lenalidomide is contraindicated',
+cycle:'28-day cycles',
+trial:'Established renal-impairment backbone; daratumumab combinations supported by phase 2 data',
+drugs:[
+['Cyclophosphamide','300 mg/m² PO <span class="small">(or 500 mg/m²)</span>','Days 1, 8, 15, 22','No dose adjustment required in renal failure. Ensure adequate hydration.'],
+['Bortezomib','1.3 mg/m² SC','Days 1, 8, 15 <span class="small">(or days 1, 4, 8, 11)</span>','Not renally cleared — safe in dialysis. Give after dialysis on treatment days.'],
+['Dexamethasone','40 mg PO/IV','Days 1, 8, 15, 22','20 mg in frail patients.'],
+['Daratumumab <span class="small">(optional)</span>','16 mg/kg IV or 1,800 mg SC','Weekly → q2w → q4w','Adds anti-CD38 activity without renal clearance concerns.']
+],
+prophylaxis:['Herpes zoster prophylaxis','PJP prophylaxis if on daratumumab or prolonged steroids','Bone-directed therapy — use denosumab if CrCl &lt;30 mL/min','Tumour lysis prophylaxis'],
+monitor:['Creatinine, electrolytes, urine output','Free light chains — renal response','CBC (cyclophosphamide myelosuppression)','Consider plasmapheresis if cast nephropathy with high FLC']
+},
+{
+id:'vtdpace',
+name:'VTD-PACE',
+full:'Bortezomib + Thalidomide + Dexamethasone + Cisplatin + Doxorubicin + Cyclophosphamide + Etoposide',
+badges:['<span class="badge b-cir">Certain circumstances</span>'],
+setting:'Aggressive disease: plasma cell leukaemia, extensive extramedullary disease, rapidly progressive or refractory disease requiring urgent cytoreduction',
+cycle:'28-day cycles (inpatient or intensive outpatient)',
+trial:'Used in aggressive/PCLeukaemia settings; typically as a bridge to definitive therapy',
+drugs:[
+['Bortezomib','1.0–1.3 mg/m² SC/IV','Day 1 (and day 4 in some protocols)','Often reduced dose due to overlapping toxicity.'],
+['Thalidomide','100–200 mg PO','Days 1–28 (continuous)','<b>High VTE risk</b> — mandatory anticoagulation. Sedation and neuropathy common.'],
+['Dexamethasone','40 mg PO/IV','Days 1–4',''],
+['Cisplatin','10 mg/m² IV continuous infusion','Days 1–4','Nephrotoxic and ototoxic — aggressive hydration and electrolyte replacement.'],
+['Doxorubicin','10 mg/m² IV continuous infusion','Days 1–4','Cardiotoxic — monitor cumulative dose.'],
+['Cyclophosphamide','400 mg/m² IV continuous infusion','Days 1–4','Haemorrhagic cystitis — hydrate and consider mesna.'],
+['Etoposide','40 mg/m² IV continuous infusion','Days 1–4','Myelosuppression.']
+],
+prophylaxis:['Mandatory therapeutic anticoagulation (LMWH or DOAC)','Herpes zoster prophylaxis','PJP prophylaxis','Antifungal and antibacterial prophylaxis as per neutropenia protocol','G-CSF support','Tumour lysis prophylaxis and aggressive hydration'],
+monitor:['Daily CBC, electrolytes, renal and liver function during infusion','Echocardiogram before doxorubicin','Audiometry if repeated cisplatin','Stem-cell collection planning before cumulative marrow toxicity']
+},
+{
+id:'maintlen',
+name:'Lenalidomide maintenance',
+full:'Single-agent lenalidomide',
+badges:['<span class="badge b-cat1">Category 1</span>','<span class="badge b-pre">Preferred (standard risk)</span>'],
+setting:'After response to primary therapy ± autologous transplant, in standard-risk disease',
+cycle:'28-day cycles, continued until progression or unacceptable toxicity',
+trial:'CALGB 100104, IFM 2005-02, Myeloma XI — consistent PFS and OS benefit',
+drugs:[
+['Lenalidomide','10–15 mg PO','Days 1–21 of each 28-day cycle','Start at 10 mg if post-transplant cytopenias are slow to recover. REMS required. Renal dose adjustment required.']
+],
+prophylaxis:['VTE prophylaxis','Herpes zoster prophylaxis if on any proteasome inhibitor','Bone-directed therapy continues','Vaccination per schedule'],
+monitor:[
+'CBC monthly — late cytopenias are common',
+'Second primary malignancy surveillance: counsel patients on the ~6% risk; annual skin and haematological review',
+'Renal function',
+'Teratogenicity counselling — two forms of contraception'
+]
+},
+{
+id:'maintdara',
+name:'Lenalidomide + Daratumumab maintenance',
+full:'Daratumumab + Lenalidomide',
+badges:['<span class="badge b-alt">Other recommended</span>','<span class="badge b-hr">High-risk preferred</span>'],
+setting:'High-risk MM (del(17p), t(4;14), t(14;16), t(14;20), 1q+, del(1p32)); also an option in standard risk',
+cycle:'28-day cycles, continued until progression',
+trial:'AURIGA: daratumumab + lenalidomide maintenance improved MRD negativity and PFS versus lenalidomide alone',
+drugs:[
+['Daratumumab','16 mg/kg IV or 1,800 mg SC','Every 4 weeks; some protocols extend to every 8 weeks after 2 years','Premedicate. SC preferred.'],
+['Lenalidomide','10–15 mg PO','Days 1–21','REMS required.']
+],
+prophylaxis:['PJP prophylaxis','Herpes zoster prophylaxis','VTE prophylaxis','Bone-directed therapy','HBV screening and monitoring'],
+monitor:['CBC','Immunoglobulins and infection frequency','MRD assessment at intervals','Infusion reactions']
+},
+{
+id:'maintkr',
+name:'Carfilzomib + Lenalidomide maintenance',
+full:'Carfilzomib + Lenalidomide',
+badges:['<span class="badge b-cat1">Category 1</span>','<span class="badge b-hr">High-risk preferred</span>'],
+setting:'High-risk MM, particularly where proteasome-inhibitor maintenance is desirable',
+cycle:'28-day cycles, continued until progression',
+trial:'FORTE: carfilzomib-lenalidomide maintenance produced excellent PFS in high-risk and double-hit subgroups; ATLAS supports KR maintenance post-transplant',
+drugs:[
+['Carfilzomib','20 mg/m² then 27 mg/m² IV<br><span class="small">or</span> 56 mg/m² once weekly',
+'27 mg/m²: days 1, 2, 15, 16<br>56 mg/m²: days 1, 8, 15, 16',
+'Hydrate before and after. Monitor blood pressure, cardiac and renal function closely.'],
+['Lenalidomide','25 mg PO <span class="small">(10–15 mg if post-transplant cytopenias)</span>','Days 1–21','REMS required.']
+],
+prophylaxis:['Herpes zoster prophylaxis','VTE prophylaxis','Bone-directed therapy','Tumour lysis precautions early in therapy'],
+monitor:['Blood pressure and cardiac symptoms every cycle','Creatinine and urine protein','CBC','Infusion-related reactions to carfilzomib']
+},
+{
+id:'maintbort',
+name:'Bortezomib ± Lenalidomide maintenance',
+full:'Bortezomib with or without lenalidomide',
+badges:['<span class="badge b-cat1">Category 1</span>','<span class="badge b-cir">Certain circumstances</span>'],
+setting:'Patients intolerant of lenalidomide, or where proteasome-inhibitor maintenance is preferred (e.g. some high-risk subsets)',
+cycle:'28-day cycles',
+trial:'HOVON-65/GMMG-HD4, Myeloma XI',
+drugs:[
+['Bortezomib','1.3 mg/m² SC','Every 2 weeks (days 1, 15) or monthly','Subcutaneous, weekly or biweekly scheduling minimises neuropathy.'],
+['Lenalidomide <span class="small">(optional)</span>','10–15 mg PO','Days 1–21','Adds IMiD maintenance; increases myelosuppression and second-primary risk.']
+],
+prophylaxis:['Herpes zoster prophylaxis — mandatory','VTE prophylaxis if lenalidomide included','Bone-directed therapy'],
+monitor:['Peripheral neuropathy','CBC','Renal function']
+},
+{
+id:'maintixa',
+name:'Ixazomib maintenance',
+full:'Ixazomib (oral proteasome inhibitor)',
+badges:['<span class="badge b-cir">Certain circumstances</span>'],
+setting:'Patients who prefer an all-oral proteasome-inhibitor maintenance strategy or cannot tolerate bortezomib/carfilzomib',
+cycle:'28-day cycles',
+trial:'TOURMALINE-MM3 and TOURMALINE-MM4 (category 2B recommendation)',
+drugs:[
+['Ixazomib','3 mg PO','Days 1, 8, 15 of each 28-day cycle','Take on an empty stomach, at least 1 hour before or 2 hours after food.']
+],
+prophylaxis:['Herpes zoster prophylaxis','Bone-directed therapy'],
+monitor:['CBC (thrombocytopenia is common)','Peripheral neuropathy','GI tolerance','Renal and hepatic function']
+}
+];
+
+/* ================= RENDER REGIMENS ================= */
+function renderRegimens(){
+$('#regList').innerHTML = REGIMENS.map(r => {
+const rows = r.drugs.map(d => `
+<tr>
+<td class="drug">${d[0]}</td>
+<td class="dose">${d[1]}</td>
+<td>${d[2]}</td>
+<td class="small">${d[3] || '—'}</td>
+</tr>`).join('');
+
+const prox = r.prophylaxis.map(p => `<li>${p}</li>`).join('');
+const mon = r.monitor.map(m => `<li>${m}</li>`).join('');
+
+return `
+<div class="reg" id="reg-${r.id}">
+<div class="reg-h">
+<div>
+<span class="ttl">${r.name} ${r.badges.join(' ')}</span>
+<span class="full">${r.full}</span>
+</div>
+<span class="chev">▶</span>
+</div>
+<div class="reg-b">
+<div class="meta">
+<div><b>Setting:</b> ${r.setting}</div>
+<div><b>Cycle length:</b> ${r.cycle}</div>
+<div><b>Key evidence:</b> ${r.trial}</div>
+</div>
+<table>
+<thead><tr><th>Agent</th><th>Dose</th><th>Schedule</th><th>Administration notes</th></tr></thead>
+<tbody>${rows}</tbody>
+</table>
+<div class="grid2" style="margin-top:12px">
+<div>
+<h4>🛡️ Prophylaxis</h4>
+<ul style="padding-left:18px;font-size:.85rem;margin:0">${prox}</ul>
+</div>
+<div>
+<h4>📋 Monitoring</h4>
+<ul style="padding-left:18px;font-size:.85rem;margin:0">${mon}</ul>
+</div>
+</div>
+<div class="note warn" style="margin-top:12px">
+<b>Verify before prescribing.</b> Schedules differ between trials for the same regimen — confirm against the primary
+publication and your institutional protocol, and adjust for renal/hepatic function, age and frailty.
+</div>
+</div>
+</div>`;
+}).join('');
+
+$$('.reg-h').forEach(h => h.addEventListener('click', () => {
+h.closest('.reg').classList.toggle('open');
+}));
+}
+
+/* ================= 5. TOXICITY DATA ================= */
+const TOX = [
+{ id:'t-bort', title:'Bortezomib — proteasome inhibitor',
+body:`
+<p><span class="lbl">Signature toxicities:</span> peripheral neuropathy, thrombocytopenia, herpes zoster, hypotension, GI upset.</p>
+<p><span class="lbl">Peripheral neuropathy — prevention</span></p>
+<ul>
+<li>Use <b>subcutaneous</b> rather than IV administration — markedly lower rates of grade ≥2 neuropathy.</li>
+<li>Use <b>weekly</b> rather than twice-weekly dosing where the regimen permits.</li>
+<li>Ask about numbness, tingling, burning, weakness, or falls at <b>every</b> visit. Grade by NCI CTCAE and document.</li>
+</ul>
+<p><span class="lbl">Peripheral neuropathy — management</span></p>
+<ul>
+<li><b>Grade 1 with no pain:</b> continue, monitor closely.</li>
+<li><b>Grade 1 with pain or grade 2:</b> hold until resolved to grade ≤1, then resume at 1.0 mg/m².</li>
+<li><b>Grade 2 with pain or grade 3:</b> hold until resolved, then resume at 0.7 mg/m² and change schedule to weekly.</li>
+<li><b>Grade 4:</b> discontinue permanently.</li>
+<li>Consider switching to <b>carfilzomib</b> or <b>ixazomib</b> if neuropathy is dose-limiting.</li>
+<li>Supportive: gabapentin, pregabalin, duloxetine, topical lidocaine; physiotherapy for balance.</li>
+</ul>
+<p><span class="lbl">Other management</span></p>
+<ul>
+<li><b>Herpes zoster:</b> acyclovir 400 mg BID or valacyclovir 500 mg daily for the entire treatment course.</li>
+<li><b>Thrombocytopenia:</b> typically cyclical; hold for platelets &lt;30 × 10⁹/L; transfuse if symptomatic.</li>
+<li><b>Hypotension:</b> hydrate, hold antihypertensives on treatment days, advise slow position changes.</li>
+<li><b>GI:</b> ondansetron or a similar antiemetic; loperamide for diarrhoea.</li>
+</ul>`},
+
+{ id:'t-cfz', title:'Carfilzomib — proteasome inhibitor',
+body:`
+<p><span class="lbl">Signature toxicities:</span> cardiovascular events, hypertension, acute kidney injury, pulmonary toxicity, infusion reactions, tumour lysis.</p>
+<p><span class="lbl">Cardiovascular — the key risk</span></p>
+<ul>
+<li><b>Baseline:</b> ECG and echocardiogram; document blood pressure; screen for ischaemic symptoms.</li>
+<li><b>Contraindicated</b> in uncontrolled hypertension, active heart failure, recent myocardial infarction, or unstable arrhythmia.</li>
+<li>Control blood pressure <b>before</b> each dose. Hold for grade ≥3 hypertension or any cardiac symptom.</li>
+<li>Hold for grade ≥3 heart failure, ischaemia, or arrhythmia; discontinue for grade 4 cardiac events.</li>
+<li>Hydrate with 250–500 mL normal saline before and after — reduce to 250 mL or omit in heart failure.</li>
+<li>Monitor for oedema, dyspnoea, orthopnoea, weight gain.</li>
+</ul>
+<p><span class="lbl">Renal</span></p>
+<ul>
+<li>Check creatinine and urine protein before every cycle.</li>
+<li>Risk of acute kidney injury and <b>thrombotic microangiopathy</b> — if anaemia, thrombocytopenia, schistocytes and renal failure occur together, stop carfilzomib immediately and investigate for TMA.</li>
+<li>Avoid concomitant NSAIDs and nephrotoxins.</li>
+</ul>
+<p><span class="lbl">Pulmonary &amp; infusion</span></p>
+<ul>
+<li>Dyspnoea may indicate pulmonary hypertension, interstitial lung disease, or fluid overload — investigate rather than assume.</li>
+<li>Premedicate with dexamethasone; slow the infusion rate for reactions; consider antihistamines.</li>
+</ul>
+<p><span class="lbl">Tumour lysis</span></p>
+<ul>
+<li>Allopurinol 300 mg daily (dose-adjust in renal impairment), generous hydration, and monitoring of uric acid, potassium, phosphate and calcium during cycle 1.</li>
+</ul>`},
+
+{ id:'t-len', title:'Lenalidomide / IMiDs — immunomodulatory agents',
+body:`
+<p><span class="lbl">Signature toxicities:</span> myelosuppression, venous thromboembolism, secondary malignancies, teratogenicity, diarrhoea, rash.</p>
+<p><span class="lbl">Myelosuppression</span></p>
+<ul>
+<li>Check CBC before each cycle. Dose-reduce stepwise: 25 → 15 → 10 → 5 mg.</li>
+<li>Neutropenia: hold for ANC &lt;1.0 × 10⁹/L; add G-CSF if recurrent; resume at the next lower dose level.</li>
+<li>Thrombocytopenia: hold for platelets &lt;30 × 10⁹/L; resume at the next lower dose level when recovered.</li>
+</ul>
+<p><span class="lbl">Venous thromboembolism — risk-stratify every patient</span></p>
+<ul>
+<li>Use <b>IMPEDE-VTE</b> or <b>SAVED</b> score.</li>
+<li><b>Low risk:</b> aspirin 81–325 mg daily.</li>
+<li><b>High risk</b> (IMiD + high-dose dexamethasone, prior VTE, obesity, central venous catheter, cardiac disease, immobility, inherited thrombophilia): <b>LMWH</b> (enoxaparin 40 mg daily) or a <b>DOAC</b> (apixaban 2.5 mg BID or rivaroxaban 10 mg daily).</li>
+<li>Continue prophylaxis for the duration of IMiD therapy. Reassess at every cycle.</li>
+</ul>
+<p><span class="lbl">Second primary malignancies</span></p>
+<ul>
+<li>~6% risk with long-term lenalidomide maintenance. Counsel the patient explicitly.</li>
+<li>Annual skin examination, age-appropriate cancer screening, and vigilance for cytopenias that fail to recover.</li>
+</ul>
+<p><span class="lbl">Teratogenicity — mandatory</span></p>
+<ul>
+<li>REMS programme enrolment required. Two forms of effective contraception for patients of reproductive potential; pregnancy testing before each cycle.</li>
+<li>Do not donate blood or semen during and for 4 weeks after therapy.</li>
+</ul>
+<p><span class="lbl">Renal dosing</span></p>
+<ul>
+<li>CrCl 30–60 mL/min: 10 mg daily.</li>
+<li>CrCl &lt;30 mL/min (not on dialysis): 15 mg every other day.</li>
+<li>Haemodialysis: 5 mg daily, given after dialysis on dialysis days.</li>
+</ul>
+<p><span class="lbl">Other</span></p>
+<ul>
+<li>Diarrhoea: loperamide, cholestyramine; exclude infection.</li>
+<li>Rash: topical steroids, antihistamines; hold for severe reactions (consider Stevens-Johnson syndrome).</li>
+<li>Thalidomide additionally causes sedation, constipation and irreversible neuropathy. Pomalidomide has similar class effects.</li>
+</ul>`},
+
+{ id:'t-dara', title:'Daratumumab — anti-CD38 monoclonal antibody',
+body:`
+<p><span class="lbl">Signature toxicities:</span> infusion reactions, interference with M-protein assays, hypogammaglobulinaemia, infection, cytopenias.</p>
+<p><span class="lbl">Infusion reactions</span></p>
+<ul>
+<li>Most common with the first infusion; rate decreases substantially with subsequent doses and with the subcutaneous formulation.</li>
+<li><b>Premedicate 1 hour before:</b> dexamethasone 20 mg IV (or methylprednisolone 100 mg), diphenhydramine 25–50 mg, acetaminophen 650–1000 mg.</li>
+<li>Consider splitting the first IV dose over 2 days.</li>
+<li>For mild reactions, interrupt the infusion and restart at half rate. For severe reactions, stop and treat symptomatically; do not rechallenge without specialist input.</li>
+</ul>
+<p><span class="lbl">Interference with response assessment — critically important</span></p>
+<ul>
+<li>Daratumumab binds CD38 on red blood cells, producing a band on <b>SPEP and IFE</b> that mimics M-protein. This can cause false-positive or falsely stable results.</li>
+<li><b>Solutions:</b> use a daratumumab-specific anti-idiotype assay (DIRA), mass spectrometry, or a validated IFE that distinguishes the daratumumab band. Where unavailable, interpret results with the caveat that daratumumab co-migrates in the gamma region.</li>
+<li>Serum free light chain assays are <b>not</b> affected and remain reliable.</li>
+</ul>
+<p><span class="lbl">Infection</span></p>
+<ul>
+<li>Screen for <b>hepatitis B</b> (HBsAg, anti-HBc, anti-HBs) before starting. Give antiviral prophylaxis if positive and monitor for reactivation.</li>
+<li>Monitor immunoglobulins; give IVIG 0.4 g/kg every 4 weeks if IgG &lt;400 mg/dL (&lt;4 g/L) with recurrent infections.</li>
+<li>PJP prophylaxis with TMP-SMX while on daratumumab plus steroids.</li>
+<li>Herpes zoster prophylaxis.</li>
+<li>Consider CMV monitoring in patients with recurrent fever or cytopenias.</li>
+</ul>
+<p><span class="lbl">Cytopenias</span></p>
+<ul>
+<li>Neutropenia and thrombocytopenia occur, particularly in combination with IMiDs. Support with G-CSF as needed.</li>
+</ul>`},
+
+{ id:'t-isa', title:'Isatuximab-irfc — anti-CD38 monoclonal antibody',
+body:`
+<p><span class="lbl">Signature toxicities:</span> infusion reactions, infection, cytopenias, interference with M-protein assays (less than daratumumab).</p>
+<ul>
+<li><b>Premedicate</b> with dexamethasone 20 mg IV, diphenhydramine 25–50 mg and acetaminophen before each infusion.</li>
+<li>Initial infusion over 75 minutes; may shorten with subsequent doses if well tolerated.</li>
+<li>Isatuximab binds a different CD38 epitope than daratumumab and interferes less with SPEP/IFE, but interference is still possible — use anti-idiotype or mass-spectrometry assays where available.</li>
+<li>Screen for hepatitis B before therapy; monitor for reactivation.</li>
+<li>PJP and herpes zoster prophylaxis.</li>
+<li>Monitor CBC; neutropenia and thrombocytopenia may occur.</li>
+</ul>`},
+
+{ id:'t-dex', title:'Dexamethasone — corticosteroid',
+body:`
+<p><span class="lbl">Signature toxicities:</span> hyperglycaemia, insomnia, mood disturbance, myopathy, infection, osteoporosis, VTE, GI irritation, adrenal suppression.</p>
+<ul>
+<li><b>Hyperglycaemia:</b> check fasting glucose before each cycle and during the first week of therapy. Treat with metformin or insulin as needed. Consider a diabetes consultation for poorly controlled patients.</li>
+<li><b>Infection:</b> PJP prophylaxis (TMP-SMX single-strength daily) for patients receiving ≥20 mg prednisone-equivalent daily for &gt;4 weeks. Antifungal prophylaxis if prolonged high-dose therapy.</li>
+<li><b>GI:</b> proton-pump inhibitor or H2 blocker if dyspepsia or a history of ulcer disease.</li>
+<li><b>VTE:</b> dexamethasone is a major contributor to IMiD-associated thrombosis — risk-stratify and anticoagulate.</li>
+<li><b>Insomnia and mood:</b> take in the morning; short courses of hypnotics if needed; screen for depression and psychosis with high-dose regimens.</li>
+<li><b>Myopathy:</b> proximal weakness — encourage resistance exercise; reduce dose if disabling.</li>
+<li><b>Osteoporosis:</b> calcium and vitamin D; consider DXA; bone-directed therapy is already standard in myeloma.</li>
+<li><b>Adrenal suppression:</b> taper rather than stop abruptly after prolonged therapy.</li>
+<li><b>Ocular:</b> posterior subcapsular cataracts with long-term use.</li>
+</ul>`},
+
+{ id:'t-asct', title:'Autologous stem cell transplant (melphalan)',
+body:`
+<p><span class="lbl">Conditioning</span></p>
+<ul>
+<li><b>Melphalan 200 mg/m² IV on day −2.</b></li>
+<li>Reduce to <b>140 mg/m²</b> if CrCl &lt;40 mL/min, age &gt;70, or significant comorbidity.</li>
+<li>Melphalan is mucotoxic and myelosuppressive — anticipate pancytopenia and mucositis.</li>
+</ul>
+<p><span class="lbl">Stem-cell collection</span></p>
+<ul>
+<li>Mobilise with G-CSF 10 mcg/kg SC daily ± plerixafor.</li>
+<li>Target ≥2 × 10⁶ CD34⁺ cells/kg for a single transplant; ≥4–6 × 10⁶/kg if tandem transplant is planned.</li>
+<li><b>Hold lenalidomide ≥2 weeks</b> (some protocols 4 weeks) before apheresis — prolonged exposure impairs mobilisation.</li>
+<li>Avoid melphalan exposure before collection.</li>
+</ul>
+<p><span class="lbl">Early complications</span></p>
+<ul>
+<li>Neutropenic fever — start broad-spectrum antibiotics immediately; follow institutional febrile neutropenia protocol.</li>
+<li>Mucositis — oral care, topical anaesthetics, opioid analgesia, nutritional support.</li>
+<li>Diarrhoea, nausea, anorexia.</li>
+<li>Engraftment syndrome, sinusoidal obstruction syndrome (rare).</li>
+<li>Cardiac and renal monitoring during the neutropenic phase.</li>
+</ul>
+<p><span class="lbl">Late complications</span></p>
+<ul>
+<li>Secondary myelodysplastic syndrome / acute myeloid leukaemia — risk increases with prior alkylator and lenalidomide exposure.</li>
+<li>Infertility — offer gamete cryopreservation before conditioning.</li>
+<li>Revaccination at 6–12 months post-transplant (influenza, pneumococcal, COVID-19, RSV, recombinant zoster).</li>
+<li>Prolonged cytopenias may require growth-factor support.</li>
+</ul>`},
+
+{ id:'t-tls', title:'Tumour lysis syndrome & hyperviscosity',
+body:`
+<p><span class="lbl">Risk assessment</span></p>
+<ul>
+<li>Highest risk with high tumour burden, bulky disease, high LDH, renal impairment, or rapidly proliferative disease (plasma cell leukaemia).</li>
+</ul>
+<p><span class="lbl">Prophylaxis</span></p>
+<ul>
+<li>Hydration: 2–3 L/day of oral or IV fluids if cardiac function permits.</li>
+<li>Allopurinol 300 mg daily (100–200 mg if renal impairment) starting 1–2 days before therapy.</li>
+<li>Rasburicase 3–7.5 mg IV for high-risk patients or established hyperuricaemia — contraindicated in G6PD deficiency.</li>
+<li>Avoid potassium and phosphate supplementation during high-risk periods.</li>
+</ul>
+<p><span class="lbl">Monitoring</span></p>
+<ul>
+<li>Uric acid, potassium, phosphate, calcium, creatinine, LDH every 6–12 hours during the first 48–72 hours of therapy in high-risk patients.</li>
+</ul>
+<p><span class="lbl">Hyperviscosity</span></p>
+<ul>
+<li>Consider in patients with very high monoclonal protein (usually IgA or IgG &gt;4–5 g/dL / &gt;40–50 g/L) with visual symptoms, headache, confusion, or bleeding.</li>
+<li><b>Plasmapheresis</b> provides rapid symptomatic relief and should not be delayed for chemotherapy.</li>
+</ul>`},
+
+{ id:'t-neuro', title:'Peripheral neuropathy — cross-agent approach',
+body:`
+<p><span class="lbl">Agents implicated</span></p>
+<ul>
+<li><b>Bortezomib:</b> dose- and schedule-dependent; highest with IV and twice-weekly dosing; often reversible.</li>
+<li><b>Thalidomide:</b> cumulative and frequently irreversible.</li>
+<li><b>Carfilzomib:</b> less neuropathy than bortezomib.</li>
+<li><b>Ixazomib:</b> low rates.</li>
+</ul>
+<p><span class="lbl">Prevention</span></p>
+<ul>
+<li>Subcutaneous bortezomib, weekly scheduling, and dose reduction in patients with pre-existing neuropathy or diabetes.</li>
+<li>Baseline neurological assessment with documentation before starting treatment.</li>
+</ul>
+<p><span class="lbl">Grading and management (NCI CTCAE)</span></p>
+<ul>
+<li><b>Grade 1 (asymptomatic, reflexes lost):</b> continue, monitor.</li>
+<li><b>Grade 1 with pain, or grade 2 (interfering with function but not daily activities):</b> hold until ≤grade 1, then reduce bortezomib to 1.0 mg/m².</li>
+<li><b>Grade 2 with pain, or grade 3 (interfering with daily activities):</b> hold until resolution, then 0.7 mg/m² weekly.</li>
+<li><b>Grade 4 (life-threatening, disabling):</b> discontinue permanently.</li>
+</ul>
+<p><span class="lbl">Symptomatic treatment</span></p>
+<ul>
+<li>Gabapentin 300 mg titrated to effect, pregabalin 75 mg BID, or duloxetine 30–60 mg daily.</li>
+<li>Topical lidocaine or capsaicin for localised symptoms.</li>
+<li>Physiotherapy and occupational therapy for balance, gait and fall prevention.</li>
+<li>Avoid neurotoxic co-medications where possible.</li>
+</ul>`}
+];
+
+function renderTox(){
+$('#toxList').innerHTML = TOX.map(t => `
+<div class="tox" id="${t.id}">
+<div class="tox-h"><span>${t.title}</span><span class="chev">▶</span></div>
+<div class="tox-b">${t.body}</div>
+</div>`).join('');
+
+$$('.tox-h').forEach(h => h.addEventListener('click', () => {
+h.closest('.tox').classList.toggle('open');
+}));
+}
+
+/* ================= INIT ================= */
+renderRegimens();
+renderTox();
+setUnits('US'); // initialises labels, thresholds, hints, and runs dx + risk
+</script>
+</body>
+</html>
+
+
